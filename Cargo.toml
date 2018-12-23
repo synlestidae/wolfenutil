@@ -1,0 +1,7 @@
+[package]
+name = "wolfenutil"
+version = "0.1.0"
+authors = ["Mate Antunovic <mateATantunovic.nz>"]
+edition = "2018"
+
+[dependencies]

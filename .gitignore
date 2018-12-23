@@ -1,0 +1,6 @@
+/target
+**/*.rs.bk
+
+wolf3d/
+*.swp
+*.swo
