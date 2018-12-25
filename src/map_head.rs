@@ -8,7 +8,7 @@ pub struct MapHead {
 }
 
 impl MapHead {
-    pub fn read_from(s: &mut Read) -> Option<MapHead> {
+    pub fn parse(s: &mut Read) -> Option<MapHead> {
         let mut buffer: Vec<u8> = Vec::new();
         let mut index: usize = 0;
 

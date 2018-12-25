@@ -1,4 +1,5 @@
 use std::io::Read;
+use std::io::Cursor;
 use crate::rlew_reader::RlewReader;
 
 pub struct MapType {
@@ -23,8 +24,10 @@ impl MapType {
         Some((v1, v2))
     }
 
-    fn read_from(r: &mut Read) -> Option<Self> {
-        let mut reader = RlewReader::new(r);
+    pub fn parse(data: &[u8]) -> Option<Self> {
+        let mut cursor = Cursor::new(data);
+
+        let mut reader = RlewReader::new(&mut cursor);
 
         let mut buf = Vec::new();
 

@@ -1,12 +1,13 @@
 use crate::map_head::MapHead;
 use crate::rlew_reader::RlewReader;
+use crate::map_builder::MapBuilder;
 use std::fs::File;
 use std::io::{Read, Cursor};
 
 #[test]
 pub fn loads_headers() {
     let mut f = File::open("MAPHEAD.WL6").unwrap();
-    let head = MapHead::read_from(&mut f).unwrap();
+    let head = MapHead::parse(&mut f).unwrap();
     assert_eq!(0, head.tile_info.len());
     assert_eq!(0xABCD, head.rlew_tag);
 }
@@ -37,11 +38,58 @@ pub fn decompresses_word() {
 }
 
 #[test]
+pub fn reads_u16() {
+    let data = vec![0x01, 0x00, 0x02, 0x00];
+
+    let mut c = Cursor::new(data);
+    let mut f = RlewReader::new(&mut c);
+
+    assert_eq!(f.read_u16().unwrap(), 0x0001);
+    assert_eq!(f.read_u16().unwrap(), 0x0002);
+}
+
+#[test]
+pub fn reads_u32() {
+    let data = vec![0x01, 0x00, 0x02, 0x00];
+
+    let mut c = Cursor::new(data);
+    let mut f = RlewReader::new(&mut c);
+
+    assert_eq!(f.read_u32().unwrap(), 0x01000200);
+}
+
+#[test]
+pub fn reads_u32_from_compressed() {
+    let data = vec![0xFE, 0xFE, 0x08, 0x00, 0x10, 0x00];
+
+    let mut c = Cursor::new(data);
+    let mut f = RlewReader::new(&mut c);
+
+    assert_eq!(f.read_u32().unwrap(), 0x10001000);
+    assert_eq!(f.read_u32().unwrap(), 0x10001000);
+}
+
+#[test]
 pub fn reads_headers() {
    let mut f = File::open("MAPHEAD.WL6").unwrap();
    let mut reader = RlewReader::new(&mut f);
-   let header = MapHead::read_from(&mut reader).unwrap(); 
+   let header = MapHead::parse(&mut reader).unwrap(); 
 
    assert_eq!(header.header_offsets[99], 0);
    assert_eq!(header.tile_info.len(), 0);
 }
+
+#[test]
+pub fn reads_map() {
+   let head = MapHead::parse(&mut File::open("MAPHEAD.WL6").unwrap()).unwrap();
+
+   let mut data = Vec::new(); 
+
+   File::open("GAMEMAPS.WL6").unwrap().read_to_end(&mut data);
+
+   let data = MapBuilder::new(head, data); 
+
+   data.build(0);
+}
+
+
