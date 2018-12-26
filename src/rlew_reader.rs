@@ -68,7 +68,7 @@ impl<'a> RlewReader<'a> {
         None
     }
 
-    pub fn read_offset(&mut self, idx: usize, offset: usize) -> Vec<u8> {
+    pub fn read_offset(&mut self, idx: usize, offset: usize, length: usize) -> Vec<u8> {
         let data = RlewReader::decompress(&self.compressed_buf);
 
         let mut c = Cursor::new(&self.compressed_buf[idx..(idx + offset)]);
@@ -77,7 +77,7 @@ impl<'a> RlewReader<'a> {
 
         let mut buf = Vec::new();
 
-        buf.resize(offset, 0u8);
+        buf.resize(length, 0u8);
 
         reader.read(&mut buf);
 

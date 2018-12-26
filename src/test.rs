@@ -91,12 +91,11 @@ pub fn reads_map() {
 
    let map = data.build(0).unwrap();
 
-   assert_eq!(64 * 64, map.width);
-   assert_eq!(64 * 64, map.height);
+   assert_eq!(64, map.width);
+   assert_eq!(64, map.height);
    assert_eq!("Wolf1 Map1", map.name);
    assert_eq!(64 * 64, map.plane1.data.len());
    assert_eq!(64 * 64, map.plane2.data.len());
-   assert_eq!(1, 2);
 }
 
 
