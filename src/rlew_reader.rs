@@ -59,10 +59,10 @@ impl<'a> RlewReader<'a> {
     pub fn read_u32(&mut self) -> Option<u32> {
         let mut buf = vec![0, 0, 0, 0];
         if let Ok(4) = self.read(&mut buf) {
-            let val = ((buf[0] as u32) << 24) +
-                   ((buf[1] as u32) << 16) +
-                   ((buf[2] as u32) << 8) +
-                   ((buf[3] as u32));
+            let val = ((buf[3] as u32) << 24) +
+                   ((buf[2] as u32) << 16) +
+                   ((buf[1] as u32) << 8) +
+                   ((buf[0] as u32));
             return Some(val);
         }
         None
@@ -116,7 +116,7 @@ impl<'a> Read for RlewReader<'a> {
 pub fn read_word(segment: &[u8], i: &mut usize) -> u16 {
     let (b1, b2) = read_word_bytes(segment, i);
 
-    ((b1 as u16) << 8) + (b2 as u16)
+    ((b2 as u16) << 8) + (b1 as u16)
 }
 
 pub fn read_word_bytes(segment: &[u8], i: &mut usize) -> (u8, u8) {

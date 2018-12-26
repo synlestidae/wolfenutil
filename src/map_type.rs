@@ -29,22 +29,12 @@ impl MapType {
 
         let mut reader = RlewReader::new(&mut cursor);
 
-        let mut buf = Vec::new();
-
-        buf.resize(26, 0u8);
-
-        if let Ok(26) = reader.read(&mut buf) {
-            let mut map_type = MapType {
-                plane_start: [reader.read_u32().unwrap(), reader.read_u32().unwrap(), reader.read_u32().unwrap()],
-                plane_length: [reader.read_u16().unwrap(), reader.read_u16().unwrap(), reader.read_u16().unwrap()],
-                width: reader.read_u16().unwrap(),
-                height: reader.read_u16().unwrap(),
-                name: String::new()
-            };
-
-            Some(map_type)
-        } else {
-            None
-        }
+        Some(MapType {
+            plane_start: [reader.read_u32().unwrap(), reader.read_u32().unwrap(), reader.read_u32().unwrap()],
+            plane_length: [reader.read_u16().unwrap(), reader.read_u16().unwrap(), reader.read_u16().unwrap()],
+            width: reader.read_u16().unwrap(),
+            height: reader.read_u16().unwrap(),
+            name: String::new()
+        })
     }
 }

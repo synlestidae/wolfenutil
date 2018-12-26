@@ -22,7 +22,7 @@ pub fn decompresses_vec() {
 
     f.read_to_end(&mut buf);
 
-    assert_eq!(vec![0x0, 0x2], buf);
+    assert_eq!(vec![0x2, 0x0], buf);
 }
 
 #[test]
@@ -55,18 +55,18 @@ pub fn reads_u32() {
     let mut c = Cursor::new(data);
     let mut f = RlewReader::new(&mut c);
 
-    assert_eq!(f.read_u32().unwrap(), 0x01000200);
+    assert_eq!(f.read_u32().unwrap(), 0x00020001);
 }
 
 #[test]
 pub fn reads_u32_from_compressed() {
-    let data = vec![0xFE, 0xFE, 0x08, 0x00, 0x10, 0x00];
+    let data = vec![0xFE, 0xFE, 0x04, 0x00, 0x10, 0x00];
 
     let mut c = Cursor::new(data);
     let mut f = RlewReader::new(&mut c);
 
-    assert_eq!(f.read_u32().unwrap(), 0x10001000);
-    assert_eq!(f.read_u32().unwrap(), 0x10001000);
+    assert_eq!(f.read_u32().unwrap(), 0x00100010);
+    assert_eq!(f.read_u32().unwrap(), 0x00100010);
 }
 
 #[test]
