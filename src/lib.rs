@@ -5,3 +5,5 @@ mod rlew_reader;
 mod map_builder;
 mod plane;
 mod map;
+
+extern crate byteorder;

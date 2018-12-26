@@ -1,5 +1,6 @@
 use std::io::Read;
 use crate::rlew_reader::RlewReader;
+use byteorder::{ReadBytesExt, LittleEndian};
 
 pub struct MapHead {
     pub rlew_tag: u16,
@@ -21,12 +22,12 @@ impl MapHead {
 
         let mut r = RlewReader::new(s);
 
-        map_head.rlew_tag = r.read_u16().unwrap();
+        map_head.rlew_tag = r.read_u16::<LittleEndian>().unwrap();
 
         index = 2;
 
         for i in 0..100 {
-            map_head.header_offsets[i] = r.read_u32().unwrap();
+            map_head.header_offsets[i] = r.read_u32::<LittleEndian>().unwrap();
         }
 
         let mut tile_info = Vec::new();

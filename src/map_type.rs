@@ -1,6 +1,7 @@
 use std::io::Read;
 use std::io::Cursor;
 use crate::rlew_reader::RlewReader;
+use byteorder::{ReadBytesExt, LittleEndian};
 
 #[derive(Debug)]
 pub struct MapType {
@@ -31,10 +32,10 @@ impl MapType {
         let mut reader = RlewReader::new(&mut cursor);
 
         Some(MapType {
-            plane_start: [reader.read_u32().unwrap(), reader.read_u32().unwrap(), reader.read_u32().unwrap()],
-            plane_length: [reader.read_u16().unwrap(), reader.read_u16().unwrap(), reader.read_u16().unwrap()],
-            width: reader.read_u16().unwrap(),
-            height: reader.read_u16().unwrap(),
+            plane_start: [reader.read_u32::<LittleEndian>().unwrap(), reader.read_u32::<LittleEndian>().unwrap(), reader.read_u32::<LittleEndian>().unwrap()],
+            plane_length: [reader.read_u16::<LittleEndian>().unwrap(), reader.read_u16::<LittleEndian>().unwrap(), reader.read_u16::<LittleEndian>().unwrap()],
+            width: reader.read_u16::<LittleEndian>().unwrap(),
+            height: reader.read_u16::<LittleEndian>().unwrap(),
             name: read_c_string(&((0..16).into_iter().map(|_| reader.read_u8().unwrap()).collect::<Vec<u8>>()))
         })
     }

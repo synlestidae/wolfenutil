@@ -31,8 +31,6 @@ impl MapBuilder {
 
         let map_type = MapType::parse(&self.data[offset..m_end])?;
 
-        println!("{:?}", map_type);
-
         let mut plane1_data: Vec<u8> = Vec::new();
         let p1_start = map_type.plane_start[0] as usize;
         let p1_length = map_type.plane_length[0] as usize;
@@ -43,9 +41,6 @@ impl MapBuilder {
 
         let mut c = Cursor::new(&self.data);
         let mut reader = RlewReader::new(&mut c);
-
-        println!("Read 1 {} {}", p1_start, p1_length);
-        println!("Read 2 {} {}", p2_start, p2_length);
 
         let mut plane1_data = reader.read_offset(p1_start, p1_length, 64 * 64);
         let mut plane2_data = reader.read_offset(p2_start, p2_length, 64 * 64);

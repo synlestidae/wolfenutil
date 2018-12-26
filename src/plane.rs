@@ -1,3 +1,3 @@
 pub struct Plane {
-    pub data: Vec<u8>
+    pub data: Vec<u16>
 }
