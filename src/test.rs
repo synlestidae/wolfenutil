@@ -89,7 +89,10 @@ pub fn reads_map() {
 
    let data = MapBuilder::new(head, data); 
 
-   data.build(0);
+   let map = data.build(0).unwrap();
+
+   //assert_eq!(64 * 64, map.plane1.data.len());
+   assert_eq!(64 * 64, map.plane2.data.len());
 }
 
 

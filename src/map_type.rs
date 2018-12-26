@@ -2,6 +2,7 @@ use std::io::Read;
 use std::io::Cursor;
 use crate::rlew_reader::RlewReader;
 
+#[derive(Debug)]
 pub struct MapType {
    pub plane_start: [u32; 3], 
    pub plane_length: [u16; 3], 
@@ -34,7 +35,20 @@ impl MapType {
             plane_length: [reader.read_u16().unwrap(), reader.read_u16().unwrap(), reader.read_u16().unwrap()],
             width: reader.read_u16().unwrap(),
             height: reader.read_u16().unwrap(),
-            name: String::new()
+            name: read_c_string(&((0..16).into_iter().map(|_| reader.read_u8().unwrap()).collect::<Vec<u8>>()))
         })
     }
+}
+
+fn read_c_string(buf: &[u8]) -> String {
+    let mut string = String::new();
+    for &b in buf {
+        if b == 0 {
+            return string
+        }
+        if b < 127 {
+            string.push(b as char); 
+        } 
+    }
+    string
 }

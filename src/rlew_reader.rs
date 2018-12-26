@@ -84,6 +84,14 @@ impl<'a> RlewReader<'a> {
         buf
     }
 
+    pub fn read_u8(&mut self) -> Option<u8> {
+        let mut buf = vec![0];
+        if let Ok(1) = self.read(&mut buf) {
+            return Some(buf[0]);
+        }
+        None
+    }
+
     pub fn read_u16(&mut self) -> Option<u16> {
         let mut buf = vec![0, 0];
         if let Ok(2) = self.read(&mut buf) {

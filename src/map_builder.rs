@@ -31,6 +31,8 @@ impl MapBuilder {
 
         let map_type = MapType::parse(&self.data[offset..m_end])?;
 
+        println!("{:?}", map_type);
+
         let mut plane1_data: Vec<u8> = Vec::new();
         let p1_start = map_type.plane_start[0] as usize;
         let p1_length = map_type.plane_length[0] as usize;
