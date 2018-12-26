@@ -47,15 +47,8 @@ impl MapBuilder {
         println!("Read 1 {} {}", p1_start, p1_length);
         println!("Read 2 {} {}", p2_start, p2_length);
 
-        let mut plane1_data = reader.read_offset(p1_start, p1_length);
-        let mut plane2_data = reader.read_offset(p2_start, p2_length);
-
-        /*let mut c = Cursor::new(&self.data[p1_start..m_end]);
-
-
-        plane1_data.resize(p1_length, 0u8);*/
-
-        reader.read(&mut plane1_data);
+        let mut plane1_data = reader.read_offset(p1_start, p1_length, 64 * 64);
+        let mut plane2_data = reader.read_offset(p2_start, p2_length, 64 * 64);
 
         Some(Map {
             width: map_type.width, 
