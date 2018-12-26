@@ -14,7 +14,7 @@ pub fn loads_headers() {
 
 #[test]
 pub fn decompresses_vec() {
-    let data = vec![0xFE, 0xFE, 0x0, 0x1, 0x0, 0x2];
+    let data = vec![0xFE, 0xFE, 0x1, 0x0, 0x2, 0x0];
 
     let mut c = Cursor::new(data);
     let mut f = RlewReader::new(&mut c);
